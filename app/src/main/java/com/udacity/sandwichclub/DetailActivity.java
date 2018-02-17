@@ -3,7 +3,10 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -19,6 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ImageView ingredientsIv = findViewById(R.id.image_iv);
 
@@ -43,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +60,23 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+
+        TextView mAlsoKnowAs = findViewById(R.id.also_known_tv);
+        TextView mIngredients = findViewById(R.id.ingredients_tv);
+        TextView mPlaceOfOrigin = findViewById(R.id.origin_tv);
+        TextView mDescription = findViewById(R.id.description_tv);
+
+        //format list elements with comma as separator
+        String alsoKnownAsStr = TextUtils.join(", ", sandwich.getAlsoKnownAs());
+        String ingredientsStr = TextUtils.join(", ", sandwich.getIngredients());
+
+        //display Sandwich properties
+        mAlsoKnowAs.setText(alsoKnownAsStr);
+        mIngredients.setText(ingredientsStr);
+        mPlaceOfOrigin.setText(sandwich.getPlaceOfOrigin());
+        mDescription.setText(sandwich.getDescription());
 
     }
+
 }
